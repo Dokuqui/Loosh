@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using DotNetEnv;
 using SmartHomeApi.Services;
 using System.Text;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.Filters;
 
 Env.Load();
 
