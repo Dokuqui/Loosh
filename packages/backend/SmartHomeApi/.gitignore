@@ -221,6 +221,10 @@ project.lock.json
 # UWP Projects
 AppPackages/
 
+appsettings.json
+appsettings.Development.json
+.env
+
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
