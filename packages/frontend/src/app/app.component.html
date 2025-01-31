@@ -1,1 +1,6 @@
-<app-nx-welcome></app-nx-welcome> <router-outlet></router-outlet>
+<mat-toolbar color="primary">
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+  <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
+</mat-toolbar>
+<router-outlet></router-outlet>
