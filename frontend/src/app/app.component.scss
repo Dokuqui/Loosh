@@ -1,7 +1,22 @@
 /* Include a prebuilt theme */
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
-/* Optional: Add some basic styling for spacing */
+/* src/app/app.component.scss */
+.mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 .spacer {
   flex: 1 1 auto;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: 64px;
+}
+
+.mat-toolbar .mat-button {
+  margin-right: 8px;
 }

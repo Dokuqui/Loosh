@@ -42,4 +42,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('jwt_token');
   }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
 }

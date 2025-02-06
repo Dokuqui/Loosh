@@ -1,0 +1,22 @@
+<!-- src/app/components/add-device-dialog/add-device-dialog.component.html -->
+<h1 mat-dialog-title>Add New Device</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Device Name</mat-label>
+    <input matInput [(ngModel)]="name" name="name" required />
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Device Type</mat-label>
+    <input matInput [(ngModel)]="type" name="type" required />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    [mat-dialog-close]="{ name: name, type: type }"
+    cdkFocusInitial
+  >
+    Add
+  </button>
+</div>
