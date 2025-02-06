@@ -1,17 +1,42 @@
-<mat-toolbar color="primary">
-  <span>Smart Home Dashboard</span>
-</mat-toolbar>
-<div class="container">
-  <mat-card *ngFor="let device of devices">
+<div class="dashboard-container">
+  <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ device.name }}</mat-card-title>
+      <mat-card-title>Device List</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>Type: {{ device.type }}</p>
-      <p>Status: {{ device.status ? 'On' : 'Off' }}</p>
-      <button mat-raised-button (click)="toggleDeviceStatus(device)">
-        {{ device.status ? 'Turn Off' : 'Turn On' }}
+      <button mat-raised-button color="accent" (click)="openAddDeviceDialog()">
+        Add New Device
       </button>
+      <mat-list>
+        <mat-list-item *ngFor="let device of devices">
+          <mat-icon>{{
+            device.status ? "power_settings_new" : "power_off"
+          }}</mat-icon>
+          <span>{{ device.name }} ({{ device.type }})</span>
+          <span class="status">{{ device.status ? "On" : "Off" }}</span>
+          <button mat-icon-button (click)="toggleDeviceStatus(device)">
+            <mat-icon>{{
+              device.status ? "toggle_off" : "toggle_on"
+            }}</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteDevice(device.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Messages</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let message of messages">
+          {{ message }}
+        </mat-list-item>
+      </mat-list>
     </mat-card-content>
   </mat-card>
 </div>

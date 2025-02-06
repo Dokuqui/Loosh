@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   title = 'Smart Home Automation System';
-  isAuthenticated = false;
+  isAuthenticated: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -21,11 +21,12 @@ export class AppComponent implements OnInit {
   }
 
   checkAuthentication(): void {
-    this.isAuthenticated = !!this.authService.getToken();
+    this.isAuthenticated = this.authService.isAuthenticated();
   }
 
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.isAuthenticated = false;
   }
 }
