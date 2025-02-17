@@ -4,20 +4,14 @@
       <mat-card-title>Device List</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <button mat-raised-button color="accent" (click)="openAddDeviceDialog()">
-        Add New Device
-      </button>
+      <button mat-raised-button color="accent" (click)="openAddDeviceDialog()">Add New Device</button>
       <mat-list>
         <mat-list-item *ngFor="let device of devices">
-          <mat-icon>{{
-            device.status ? "power_settings_new" : "power_off"
-          }}</mat-icon>
+          <mat-icon>{{ device.status ? 'power_settings_new' : 'power_off' }}</mat-icon>
           <span>{{ device.name }} ({{ device.type }})</span>
-          <span class="status">{{ device.status ? "On" : "Off" }}</span>
+          <span class="status" [ngClass]="device.status ? 'on' : 'off'">{{ device.status ? 'On' : 'Off' }}</span>
           <button mat-icon-button (click)="toggleDeviceStatus(device)">
-            <mat-icon>{{
-              device.status ? "toggle_off" : "toggle_on"
-            }}</mat-icon>
+            <mat-icon>{{ device.status ? 'toggle_off' : 'toggle_on' }}</mat-icon>
           </button>
           <button mat-icon-button (click)="deleteDevice(device.id)">
             <mat-icon>delete</mat-icon>
@@ -26,7 +20,6 @@
       </mat-list>
     </mat-card-content>
   </mat-card>
-
   <mat-card>
     <mat-card-header>
       <mat-card-title>Messages</mat-card-title>

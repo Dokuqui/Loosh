@@ -82,7 +82,13 @@ export class DashboardComponent implements OnInit {
   }
 
   openAddDeviceDialog(): void {
-    const dialogRef = this.dialog.open(AddDeviceDialogComponent);
+    const dialogRef = this.dialog.open(AddDeviceDialogComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      height: 'auto',
+      disableClose: true,
+      autoFocus: false,
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -90,4 +96,5 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
 }
