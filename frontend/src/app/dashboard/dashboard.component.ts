@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { SignalRService } from '../services/signal-r.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { AuthService } from '../auth/auth.service';
 import { AddDeviceDialogComponent } from '../add-device-dialog/add-device-dialog.component';
 
@@ -21,13 +22,19 @@ import { AddDeviceDialogComponent } from '../add-device-dialog/add-device-dialog
     MatCardModule,
     MatIconModule,
     MatListModule,
+    MatPaginatorModule,
     FormsModule,
     CommonModule,
   ],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   devices: Device[] = [];
   messages: string[] = [];
+  paginatedMessages: string[] = [];
+  pageSize = 20;
+  currentPage = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private deviceService: DeviceService,
@@ -41,7 +48,15 @@ export class DashboardComponent implements OnInit {
     this.fetchDevices();
     this.signalRService.onReceiveMessage((user: string, message: string) => {
       this.messages.push(`${user}: ${message}`);
+      this.updatePaginatedMessages();
     });
+    this.updatePaginatedMessages();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.paginator) {
+      this.paginator.page.subscribe(() => this.updatePaginatedMessages());
+    }
   }
 
   fetchDevices(): void {
@@ -97,4 +112,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  updatePaginatedMessages(): void {
+    const start = this.currentPage * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedMessages = this.messages.slice(start, end);
+  }
+
+  onPageChange(event: any): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePaginatedMessages();
+  }
 }

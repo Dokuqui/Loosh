@@ -26,21 +26,23 @@ export class AuthService {
   }
 
   login(username: string, email: string, password: string): Observable<void> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/login`, { username, email, password })
-      .pipe(
-        map((response) => {
-          localStorage.setItem('jwt_token', response.token);
-        })
-      );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { username, email, password }).pipe(
+      map((response) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+        } else {
+          console.error('No token received from the server');
+        }
+      })
+    );
   }
 
   getToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    return localStorage.getItem('token');
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
   }
 
   isAuthenticated(): boolean {
