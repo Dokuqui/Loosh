@@ -74,6 +74,7 @@
             padding: 4px 8px;
             border-radius: 4px;
             margin-right: 12px;
+            margin-left: 12px;
 
             &.on {
               background-color: #4caf50;
@@ -87,7 +88,9 @@
           }
 
           button[mat-icon-button] {
-            margin-left: 8px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            margin-left: 20px;
             color: #666;
             transition: all 0.3s ease;
 
@@ -97,6 +100,42 @@
             }
           }
         }
+      }
+    }
+  }
+
+  // Device Card Specific Styles
+  .mat-card-device {
+    height: 400px; // Fixed height for the device card
+    display: flex;
+    flex-direction: column;
+
+    mat-card-content {
+      flex: 1;
+      overflow-y: auto; // Make content scrollable
+      max-height: calc(400px - 112px); // Adjust for header and padding
+    }
+  }
+
+  // Messages Card Specific Styles
+  mat-card:not(.mat-card-device) {
+    display: flex;
+    flex-direction: column;
+
+    mat-card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      mat-list {
+        flex: 1;
+        overflow-y: auto; // Make messages scrollable
+      }
+
+      mat-paginator {
+        margin-top: auto; // Push paginator to the bottom
+        border-top: 1px solid #eee;
+        padding-top: 16px;
       }
     }
   }

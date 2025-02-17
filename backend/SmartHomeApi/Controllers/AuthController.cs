@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Threading.Tasks;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartHomeApi.Data;
 using SmartHomeApi.Models;
 using SmartHomeApi.Services;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartHomeApi.Controllers
 {
@@ -38,15 +38,16 @@ namespace SmartHomeApi.Controllers
                 Username = model.Username,
                 PasswordHash = hashedPassword,
                 Email = model.Email,
-                Role = "User"
+                Role = "User",
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok("User registered successfully.");
-        }
+            var token = await _authService.GenerateJwtToken(user);
 
+            return Ok(new AuthResponse { Token = token });
+        }
 
         [HttpPost("login")]
         [AllowAnonymous]

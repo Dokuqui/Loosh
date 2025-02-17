@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using DotNetEnv;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DotNetEnv;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SmartHomeApi.Services
 {
@@ -17,25 +17,65 @@ namespace SmartHomeApi.Services
             _configuration = configuration;
         }
 
-        public Task<string> GenerateJwtToken(SmartHomeApi.Data.User user)
+        public async Task<string> GenerateJwtToken(SmartHomeApi.Data.User user)
         {
-            Env.Load();
-            var jwtKey = Environment.GetEnvironmentVariable("Jwt__Key")
-             ?? throw new InvalidOperationException("JWT Key is missing");
+            try
+            {
+                Env.Load();
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var jwtKey =
+                    Environment.GetEnvironmentVariable("Jwt__Key")
+                    ?? throw new InvalidOperationException("JWT Key is missing.");
+                var issuer =
+                    _configuration["Jwt:Issuer"]
+                    ?? throw new InvalidOperationException("JWT Issuer is missing.");
+                var audience =
+                    _configuration["Jwt:Audience"]
+                    ?? throw new InvalidOperationException("JWT Audience is missing.");
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: credentials);
+                if (
+                    user == null
+                    || string.IsNullOrEmpty(user.Username)
+                    || string.IsNullOrEmpty(user.Email)
+                )
+                {
+                    throw new ArgumentException(
+                        "User object is invalid or missing required properties."
+                    );
+                }
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var claims = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Name, user.Username ?? "Unknown"),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "Unknown"),
+                    new Claim("role", user.Role ?? "User"),
+                };
 
-            return Task.FromResult(tokenString);
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+                var signingCredentials = new SigningCredentials(
+                    securityKey,
+                    SecurityAlgorithms.HmacSha256
+                );
+
+                var token = new JwtSecurityToken(
+                    issuer: issuer,
+                    audience: audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(60),
+                    signingCredentials: signingCredentials
+                );
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return await Task.FromResult(tokenString);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error generating JWT token: {ex.Message}");
+                throw;
+            }
         }
     }
 }
