@@ -1,32 +1,103 @@
 .dashboard-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f5f5f5;
-}
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 24px;
+  padding-top: 64px;
 
-mat-card {
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 20px;
-}
+  mat-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-mat-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
 
-.status {
-  margin-left: 10px;
-  font-weight: bold;
-}
+    mat-card-header {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px 12px 0 0;
 
-.spacer {
-  flex: 1 1 auto;
-}
+      mat-card-title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
 
-mat-list-item button {
-  margin-left: 10px;
+    mat-card-content {
+      padding: 24px;
+
+      button[mat-raised-button] {
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        font-weight: bold;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      mat-list {
+        padding: 0;
+
+        mat-list-item {
+          display: flex;
+          align-items: center;
+          padding: 12px 0;
+          border-bottom: 1px solid #eee;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          mat-icon {
+            margin-right: 12px;
+            color: #6a11cb;
+          }
+
+          span {
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+          }
+
+          .status {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 12px;
+
+            &.on {
+              background-color: #4caf50;
+              color: white;
+            }
+
+            &.off {
+              background-color: #f44336;
+              color: white;
+            }
+          }
+
+          button[mat-icon-button] {
+            margin-left: 8px;
+            color: #666;
+            transition: all 0.3s ease;
+
+            &:hover {
+              color: #2575fc;
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+    }
+  }
 }

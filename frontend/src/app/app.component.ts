@@ -3,12 +3,13 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [MatToolbarModule, RouterModule, CommonModule],
+  imports: [MatToolbarModule, MatIconModule, RouterModule, CommonModule],
 })
 export class AppComponent implements OnInit {
   title = 'Smart Home Automation System';

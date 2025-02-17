@@ -1,22 +1,26 @@
-<!-- src/app/components/add-device-dialog/add-device-dialog.component.html -->
-<h1 mat-dialog-title>Add New Device</h1>
-<div mat-dialog-content>
-  <mat-form-field appearance="fill" class="full-width">
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon class="dialog-icon">devices</mat-icon>
+  Add New Device
+</h2>
+
+<div mat-dialog-content class="dialog-content-modal">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Device Name</mat-label>
-    <input matInput [(ngModel)]="name" name="name" required />
+    <input matInput [(ngModel)]="name" />
   </mat-form-field>
-  <mat-form-field appearance="fill" class="full-width">
+
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Device Type</mat-label>
-    <input matInput [(ngModel)]="type" name="type" required />
+    <input matInput [(ngModel)]="type" />
   </mat-form-field>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button
-    mat-button
-    [mat-dialog-close]="{ name: name, type: type }"
-    cdkFocusInitial
-  >
-    Add
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button class="cancel-btn" (click)="onNoClick()">
+    <mat-icon>close</mat-icon> Cancel
+  </button>
+  <button mat-flat-button color="primary" class="add-btn" (click)="dialogRef.close({ name, type })">
+    <mat-icon>add</mat-icon> Add Device
   </button>
 </div>
+
